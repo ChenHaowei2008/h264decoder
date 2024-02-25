@@ -35,9 +35,11 @@ H264Decoder::H264Decoder()
     throw H264InitFailure("cannot allocate context");
 
   // Note: CODEC_CAP_TRUNCATED was prefixed with AV_...
+  #if LIBAVCODEC_VERSION_MAJOR < 60
   if(codec->capabilities & AV_CODEC_CAP_TRUNCATED) {
     context->flags |= AV_CODEC_FLAG_TRUNCATED;
   }  
+  #endif
 
   int err = avcodec_open2(context, codec, nullptr);
   if (err < 0)
